@@ -32,8 +32,12 @@ ENV CLONE_TAG=master
 RUN git clone -b ${CLONE_TAG} --depth 1 https://github.com/dollabs/caffe.git . && \
     for req in $(cat python/requirements.txt) pydot; do pip install $req; done && \
     mkdir build && cd build && \
-    cmake -DUSE_CUDNN=1 .. && \
-    make -j"$(nproc)"
+#    cmake -DUSE_CUDNN=1 .. && \
+    cp Makefile.config.example Makefile.config &&    
+    make -j"$(nproc)" &&
+    make py &&
+    make test -j"$(nproc)"
+    
 
 ENV PYCAFFE_ROOT $CAFFE_ROOT/python
 ENV PYTHONPATH $PYCAFFE_ROOT:$PYTHONPATH
