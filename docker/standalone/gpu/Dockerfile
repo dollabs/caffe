@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python-dev \
         python-numpy \
         python-pip \
+        python-opencv \
+        python-lxml \
         python-scipy && \
     rm -rf /var/lib/apt/lists/*
 
@@ -34,6 +36,8 @@ RUN git clone -b ${CLONE_TAG} --depth 1 https://github.com/dollabs/caffe.git . &
     mkdir build && cd build && \
     cmake -DUSE_CUDNN=1 .. && \
     make -j"$(nproc)"
+
+RUN pip install --upgrade  numpy
 
 ENV PYCAFFE_ROOT $CAFFE_ROOT/python
 ENV PYTHONPATH $PYCAFFE_ROOT:$PYTHONPATH
